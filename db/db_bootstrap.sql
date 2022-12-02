@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 -- This file is to bootstrap a database for the CS3200 project. 
 
 -- Create a new database.  You can change the name later.  You'll
@@ -192,12 +185,33 @@ create USER 'patient'@'%' IDENTIFIED by 'ineedmeds';
 GRANT SELECT, UPDATE on pharmacy_db.Patient to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Insurance to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Prescriber to 'patient'@'%';
-GRANT SELECT, DELETE on pharmacy_db.Order to 'patient'@'%'; -- user can cancel orders
+GRANT SELECT, DELETE on pharmacy_db.`Order` to 'patient'@'%'; -- user can cancel orders
 GRANT SELECT on pharmacy_db.OrderItem to 'patient'@'%'; 
 GRANT SELECT on pharmacy_db.Pharmacy to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Hospital  to 'patient'@'%';
 FLUSH PRIVILEGES;
 
+-- making pharmacy persona user
+create USER 'pharmacy'@'%' IDENTIFIED by 'wearepharmers';
+GRANT SELECT, UPDATE on pharmacy_db.Pharmacy to 'pharmacy'@'%';
+GRANT SELECT on pharmacy_db.* to 'pharmacy'@'%'; -- let them see everything
+GRANT UPDATE, INSERT on pharmacy_db.Shipment to 'pharmacy'@'%';
+GRANT UPDATE, INSERT on pharmacy_db.PharmacyEmployee to 'pharmacy'@'%';
+GRANT UPDATE on pharmacy_db.`Order` to 'pharmacy'@'%';
+
+FLUSH PRIVILEGES;
+
+-- making prescriber persona user
+create USER 'prescriber'@'%' IDENTIFIED by 'ihavethegoodstuff';
+GRANT SELECT, UPDATE, on pharmacy_db.Prescriber to 'prescriber'@'%';
+patient hoaspital ElectronicRx, ;pharmacy
+GRANT SELECT, UPDATE, INSERT pharmacy_db.ElectronicRx to 'prescriber'@'%';
+GRANT SELECT, UPDATE pharmacy_db.Hospital to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT pharmacy_db.Pharmacy to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT pharmacy_db.Patient to 'prescriber'@'%';
+
+
+FLUSH PRIVILEGES;
 
 -- SAMPLE DATA (10 ROWS EACH) --
 
