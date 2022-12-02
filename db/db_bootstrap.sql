@@ -179,7 +179,6 @@ create table ShipmentItem (
     quantity int NOT NULL
 );
 
-
 -- making patient persona user
 create USER 'patient'@'%' IDENTIFIED by 'ineedmeds';
 GRANT SELECT, UPDATE on pharmacy_db.Patient to 'patient'@'%';
@@ -193,24 +192,21 @@ FLUSH PRIVILEGES;
 
 -- making pharmacy persona user
 create USER 'pharmacy'@'%' IDENTIFIED by 'wearepharmers';
-GRANT SELECT, UPDATE on pharmacy_db.Pharmacy to 'pharmacy'@'%';
 GRANT SELECT on pharmacy_db.* to 'pharmacy'@'%'; -- let them see everything
+GRANT UPDATE on pharmacy_db.Pharmacy to 'pharmacy'@'%';
 GRANT UPDATE, INSERT on pharmacy_db.Shipment to 'pharmacy'@'%';
 GRANT UPDATE, INSERT on pharmacy_db.PharmacyEmployee to 'pharmacy'@'%';
-GRANT UPDATE on pharmacy_db.`Order` to 'pharmacy'@'%';
-
+GRANT UPDATE, INSERT, DELETE on pharmacy_db.`Order` to 'pharmacy'@'%';
 FLUSH PRIVILEGES;
 
 -- making prescriber persona user
 create USER 'prescriber'@'%' IDENTIFIED by 'ihavethegoodstuff';
-GRANT SELECT, UPDATE, on pharmacy_db.Prescriber to 'prescriber'@'%';
+GRANT SELECT, UPDATE on pharmacy_db.Prescriber to 'prescriber'@'%';
 patient hoaspital ElectronicRx, ;pharmacy
-GRANT SELECT, UPDATE, INSERT pharmacy_db.ElectronicRx to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT, DELETE pharmacy_db.ElectronicRx to 'prescriber'@'%';
 GRANT SELECT, UPDATE pharmacy_db.Hospital to 'prescriber'@'%';
 GRANT SELECT, UPDATE, INSERT pharmacy_db.Pharmacy to 'prescriber'@'%';
 GRANT SELECT, UPDATE, INSERT pharmacy_db.Patient to 'prescriber'@'%';
-
-
 FLUSH PRIVILEGES;
 
 -- SAMPLE DATA (10 ROWS EACH) --
