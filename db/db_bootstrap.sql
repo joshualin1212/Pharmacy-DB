@@ -60,7 +60,7 @@ create table Prescriber (
 );
 -- top left patient section
 create table Patient (
-    patientID int primary key NOT NULL,
+    patientID int primary key NOT NULL AUTO_INCREMENT,
     prescriberID int,
     insuranceID int,
     constraint patientPrescriber foreign key (prescriberID) references Prescriber(prescriberID) ON UPDATE cascade ON DELETE cascade,
@@ -85,7 +85,7 @@ create table PaPhoneNumbers (
 --
 
 create table `Order` (
-    orderID int primary key NOT NULL,
+    orderID int primary key NOT NULL AUTO_INCREMENT,
     patientID int,
     insuranceID int,
     pharmacyID int,
@@ -118,7 +118,7 @@ create table EmEmails (
 );
 
 create table ElectronicRx (
-    RxID int primary key NOT NULL,
+    RxID int primary key NOT NULL AUTO_INCREMENT,
     pharmacyID int,
     prescriberID int,
     patientID int,
@@ -161,7 +161,7 @@ create table Product (
 );
 
 create table Shipment (
-    shipmentID int primary key NOT NULL,
+    shipmentID int primary key NOT NULL AUTO_INCREMENT,
     pharmacyID int NOT NULL,
     constraint shipmentPharmacy foreign key (pharmacyID) references Pharmacy(pharmacyID) ON UPDATE cascade ON DELETE cascade,
     shipDate varchar(40) NOT NULL,
@@ -184,7 +184,7 @@ create USER 'patient'@'%' IDENTIFIED by 'ineedmeds';
 GRANT SELECT, UPDATE on pharmacy_db.Patient to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Insurance to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Prescriber to 'patient'@'%';
-GRANT SELECT, DELETE on pharmacy_db.`Order` to 'patient'@'%'; -- user can cancel orders
+GRANT SELECT, UPDATE, DELETE on pharmacy_db.`Order` to 'patient'@'%'; -- user can cancel orders
 GRANT SELECT on pharmacy_db.OrderItem to 'patient'@'%'; 
 GRANT SELECT on pharmacy_db.Pharmacy to 'patient'@'%';
 GRANT SELECT on pharmacy_db.Hospital  to 'patient'@'%';
@@ -202,11 +202,11 @@ FLUSH PRIVILEGES;
 -- making prescriber persona user
 create USER 'prescriber'@'%' IDENTIFIED by 'ihavethegoodstuff';
 GRANT SELECT, UPDATE on pharmacy_db.Prescriber to 'prescriber'@'%';
-patient hoaspital ElectronicRx, ;pharmacy
-GRANT SELECT, UPDATE, INSERT, DELETE pharmacy_db.ElectronicRx to 'prescriber'@'%';
-GRANT SELECT, UPDATE pharmacy_db.Hospital to 'prescriber'@'%';
-GRANT SELECT, UPDATE, INSERT pharmacy_db.Pharmacy to 'prescriber'@'%';
-GRANT SELECT, UPDATE, INSERT pharmacy_db.Patient to 'prescriber'@'%';
+GRANT SELECT on pharmacy_db.Patient to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT on pharmacy_db.ElectronicRx to 'prescriber'@'%';
+GRANT SELECT, UPDATE on pharmacy_db.Hospital to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT on pharmacy_db.Pharmacy to 'prescriber'@'%';
+GRANT SELECT, UPDATE, INSERT on pharmacy_db.Patient to 'prescriber'@'%';
 FLUSH PRIVILEGES;
 
 -- SAMPLE DATA (10 ROWS EACH) --
