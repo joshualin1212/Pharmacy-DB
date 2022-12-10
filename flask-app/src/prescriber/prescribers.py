@@ -23,7 +23,7 @@ def add_prescription(userID, patientID):
 @prescribers.route('/prescribers', methods=['GET'])
 def get_prescribers():
     cursor = db.get_db().cursor()
-    cursor.execute('select * from prescriber')
+    cursor.execute('select * from Prescriber')
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()

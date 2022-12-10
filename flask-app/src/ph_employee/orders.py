@@ -3,18 +3,19 @@ import json
 from src import db
 
 
-ph_employee = Blueprint('ph_employee', __name__)
+ph_orders = Blueprint('ph_orders', __name__)
 
-# GET all the pharmacy employees from the database
-@ph_employee.route('/ph_employee', methods=['GET'])
-def get_ph_employees():
+# GET all orders from pharmacy with particular pharmID from the DB
+@ph_orders.route('/pharmacy/<pharmID>', methods=['GET'])
+def get_ph_orders(pharmID):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of pharmacy employees
-    query = '''
-        SELECT phEmployeeID, pharmacyID, certification,
-            firstName, lastName from PharmacyEmployee
+    query = f'''
+        SELECT *
+        FROM `Order`
+        WHERE pharmacyID = {pharmID}
     '''
     cursor.execute(query)
 
@@ -35,14 +36,14 @@ def get_ph_employees():
 
     return jsonify(json_data)
 
-# GET pharmacy employee detail for employee with particular userID
-@ph_employee.route('/ph_employee/<userID>', methods=['GET'])
-def get_ph_employee(userID):
+# GET order detail with pharmID and orderID from the DB
+@ph_orders.route('/pharmacy/<pharmID>/<orderID>', methods=['GET'])
+def get_ph_order(pharmID, orderID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
         FROM PharmacyEmployee
-        WHERE phEmployeeID = {userID}
+        WHERE pharmacyID = {pharmID} AND orderID = {orderID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -56,7 +57,10 @@ def get_ph_employee(userID):
     return the_response
 
 # TODO:
-# UPDATE pharmacy employee detail for employee with particular userID
-@ph_employee.route('/ph_employee/<userID>', methods=['POST'])
+# UPDATE order status (ready, canceled, etc)
+@ph_orders.route('', methods=['POST'])
 def update_ph_employee(userID):
     pass
+
+# TODO:
+# UPDATE order item details (quantity, RxID)

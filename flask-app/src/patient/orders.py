@@ -5,13 +5,13 @@ from src import db
 
 pa_orders = Blueprint('pa_orders', __name__)
 
-# GET orders from the DB for patient with particular userID
+# GET orders from the DB for patient with particular userID (patient view)
 @pa_orders.route('/patients/<userID>/orders', methods=['GET'])
 def get_pa_orders(userID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
-        FROM `Order`
+        FROM PaOrder
         WHERE patientID = {userID}
     '''
     cursor.execute(query)
@@ -31,7 +31,7 @@ def get_pa_orders_ready(userID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
-        FROM `Order`
+        FROM PaOrder
         WHERE patientID = {userID} AND orderStatus = 'ready'
     '''
     cursor.execute(query)
@@ -46,12 +46,12 @@ def get_pa_orders_ready(userID):
     return the_response
 
 # GET order from the DB for patient with particular userID, orderID
-@pa_orders.route('/patients/<userID>/orders/<orderID>')
+@pa_orders.route('/patients/<userID>/orders/<orderID>', methods=['GET'])
 def get_pa_order(userID, orderID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
-        FROM `Order` o JOIN OrderItem oi ON o.orderID = oi.orderID
+        FROM PaOrder o JOIN OrderItem oi ON o.orderID = oi.orderID
         WHERE patientID = {userID} AND o.orderID = {orderID}
     '''
     cursor.execute(query)
@@ -66,12 +66,14 @@ def get_pa_order(userID, orderID):
     return the_response
 
 # UPDATE order status to 'canceled' for particular userID, orderID
-@pa_orders.route('/patients/<userID>/orders/<orderID>/cancel', methods=['PUT'])
+@pa_orders.route('/patients/<userID>/orders/<orderID>/cancel', methods=['POST'])
 def cancel_pa_orders(userID, orderID):
     cursor = db.get_db().cursor()
     query = f'''
-        UPDATE `Order`
+        UPDATE PaOrder
         SET orderStatus = 'canceled'
         WHERE patientID = {userID} AND orderID = {orderID}
     '''
     cursor.execute(query)
+
+

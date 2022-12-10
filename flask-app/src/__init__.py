@@ -34,6 +34,7 @@ def create_app():
     from src.patient.orders  import pa_orders
     
     from src.ph_employee.ph_employee import ph_employee
+    from src.ph_employee.orders import ph_orders
     
     from src.prescriber.prescribers import prescribers
     
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(pa_orders,    url_prefix='/pharmacy')
 
     app.register_blueprint(ph_employee,    url_prefix='/pharmacy')
+    app.register_blueprint(ph_orders,    url_prefix='/pharmacy')
 
     app.register_blueprint(prescribers,    url_prefix='/pharmacy')
 
