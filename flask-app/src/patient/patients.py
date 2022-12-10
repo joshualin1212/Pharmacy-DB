@@ -36,7 +36,7 @@ def get_patient(userID):
     return the_response
 
 # # TODO: # UPDATE patient detail for patient with particular userID
-# @patients.route('/patients/<userID>', methods=['GET'])
+# @patients.route('/patients/<userID>', methods=['PATCH'])
 # def get_patient(userID):
 #     cursor = db.get_db().cursor()
 #     cursor.execute('select * from patients where patientNumber = {0}'.format(userID))
@@ -49,3 +49,7 @@ def get_patient(userID):
 #     the_response.status_code = 200
 #     the_response.mimetype = 'application/json'
 #     return the_response
+
+
+# # TODO: # UPDATE pharmacy for the patient particular userID
+# @patients.route('/patients/<userID>', methods=['PATCH'])
