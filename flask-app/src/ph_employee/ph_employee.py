@@ -42,7 +42,7 @@ def get_ph_employee(userID):
     query = f'''
         SELECT *
         FROM PharmacyEmployee
-        WHERE phEmployeeID = {userID}
+        WHERE PharmacyEmployeephEmployeeID = {userID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -54,6 +54,24 @@ def get_ph_employee(userID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+# Get employee pharmacy location detail for patient with particular userID
+@ph_employee.route('/ph_employee/<userID>/pharmacy', methods=['GET'])
+def get_ph_employee_pharmacy(userID):
+    cursor = db.get_db().cursor()
+    query = f'''SELECT * from Pharmacy JOIN PharmacyEmployee ON Pharmacy.pharmacyID = PharmacyEmployee.pharmacyID where PharmacyEmployee.phEmployeeID = {userID}
+    '''
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
 
 # TODO:
 # UPDATE pharmacy employee detail for employee with particular userID

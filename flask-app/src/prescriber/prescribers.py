@@ -38,7 +38,14 @@ def get_prescribers():
 @prescribers.route('/prescribers/<userID>', methods=['GET'])
 def get_prescriber(userID):
     cursor = db.get_db().cursor()
-    cursor.execute('select * from Prescriber where prescriberID = {0}'.format(userID))
+
+    query = f'''
+        SELECT *
+        FROM Prescriber p JOIN Hospital h ON p.HID = h.HID
+        WHERE prescriberID = {userID}
+    '''
+    cursor.execute(query)
+
     row_headers = [x[0] for x in cursor.description]
     json_data = []
     theData = cursor.fetchall()

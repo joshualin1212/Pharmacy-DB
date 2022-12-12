@@ -5,14 +5,15 @@ from src import db
 
 ph_erx = Blueprint('ph_erx', __name__)
 
-# GET electronic rx with matching pharmID from DB
-@ph_erx.route('/pharmacy/<pharmID>/electronicrx', methods=['GET'])
-def get_ph_order(pharmID):
+# GET electronic rx with matching phEmplID from DB match to employee
+@ph_erx.route('/pharmacy/<phEmployeeID>/electronicrx', methods=['GET'])
+def get_ph_order(phEmployeeID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
         FROM ElectronicRx
-        WHERE pharmacyID = {pharmID}
+        join Pharmacy on ElectronicRx.pharmacyID = pharmacyID
+        join PharmacyEmployee on PharmacyEmployee.pharmacyID = {phEmployeeID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -31,7 +32,7 @@ def add_prescription(pharmID):
     cursor = db.get_db().cursor()
 
     paID = request.form['patientID']
-
+    
     query = f'''
         INSERT INTO PaOrder (
             patientID,
@@ -42,7 +43,7 @@ def add_prescription(pharmID):
         )
         VALUES (
             \'{paID}\',
-            SELECT insuranceID from Insurance i NATURAL JOIN Patient p WHERE \'{paID}\' == p.patientID,
+            SELECT insuranceID from Insurance i NATURAL JOIN Patient p WHERE \'{paID}\' = p.patientID,
             \'{pharmID}\',
             GETDATE(),
             \'in progress\'

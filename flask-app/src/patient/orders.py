@@ -13,6 +13,7 @@ def get_pa_orders(userID):
         SELECT *
         FROM PaOrder
         WHERE patientID = {userID}
+        ORDER BY orderDate ASC
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -33,6 +34,7 @@ def get_pa_orders_ready(userID):
         SELECT *
         FROM PaOrder
         WHERE patientID = {userID} AND orderStatus = 'ready'
+        ORDER BY orderDate ASC
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]

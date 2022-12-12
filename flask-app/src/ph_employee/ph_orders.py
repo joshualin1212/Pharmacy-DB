@@ -14,7 +14,7 @@ def get_ph_orders(pharmID):
     # use cursor to query the database for a list of pharmacy employees
     query = f'''
         SELECT *
-        FROM `Order`
+        FROM PaOrder
         WHERE pharmacyID = {pharmID}
     '''
     cursor.execute(query)
@@ -42,7 +42,7 @@ def get_ph_order(pharmID, orderID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
-        FROM PharmacyEmployee
+        FROM PaOrder
         WHERE pharmacyID = {pharmID} AND orderID = {orderID}
     '''
     cursor.execute(query)
