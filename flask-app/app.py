@@ -8,7 +8,6 @@ from src import create_app
 
 # create the app object
 app = create_app()
-print(repr(open('/secrets/db_password.txt').readline()), flush=True)
 
 if __name__ == '__main__':
     # we want to run in debug mode (for hot reloading) 

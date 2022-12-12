@@ -34,7 +34,7 @@ def create_app():
     from src.patient.orders  import pa_orders
     
     from src.ph_employee.ph_employee import ph_employee
-    from src.ph_employee.orders import ph_orders
+    from src.ph_employee.ph_orders import ph_orders
     
     from src.prescriber.prescribers import prescribers
     

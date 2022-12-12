@@ -3,7 +3,6 @@
 -- Create a new database.  You can change the name later.  You'll
 -- need this name in the FLASK API file(s),  the AppSmith 
 -- data source creation.
-DROP DATABASE IF EXISTS pharmacy_db;
 CREATE DATABASE pharmacy_db;
 -- create USER 'webapp'@'%' IDENTIFIED by 'abc123';
 -- grant ALL PRIVILEGES on pharmacy_db.* to 'webapp'@'%';
@@ -58,16 +57,6 @@ create table Prescriber (
     email varchar(40) NOT NULL,
     phone varchar(20) NOT NULL
 );
-create table PharmacyEmployee (
-                                  phEmployeeID int primary key NOT NULL,
-                                  pharmacyID int,
-                                  constraint pharmacyEmployeePharmacy foreign key (pharmacyID) references Pharmacy(pharmacyID) ON UPDATE cascade ON DELETE cascade,
-                                  certification varchar(40) NOT NULL,
-                                  firstName varchar(40) NOT NULL,
-                                  lastName varchar(40) NOT NULL,
-                                  city varchar(40) NOT NULL,
-                                  state varchar(40) NOT NULL
-);
 -- top left patient section
 create table Patient (
     patientID int primary key NOT NULL AUTO_INCREMENT,
@@ -92,7 +81,6 @@ create table PaPhoneNumbers (
     patientID int NOT NULL,
     constraint paPhoneNumbersPatient foreign key (PatientID) references Patient(PatientID) ON UPDATE cascade ON DELETE cascade
 );
---
 
 create table PaOrder (
     orderID int primary key NOT NULL AUTO_INCREMENT,
@@ -106,6 +94,16 @@ create table PaOrder (
     orderStatus varchar(40) NOT NULL
 );
 
+create table PharmacyEmployee (
+    phEmployeeID int primary key NOT NULL,
+    pharmacyID int,
+    constraint pharmacyEmployeePharmacy foreign key (pharmacyID) references Pharmacy(pharmacyID) ON UPDATE cascade ON DELETE cascade,
+    certification varchar(40) NOT NULL,
+    firstName varchar(40) NOT NULL,
+    lastName varchar(40) NOT NULL,
+    city varchar(40) NOT NULL,
+    state varchar(40) NOT NULL
+);
 create table EmPhoneNumbers (
     number varchar(20) primary key NOT NULL,
     phEmployeeID int NOT NULL,
@@ -179,9 +177,6 @@ create table ShipmentItem (
     quantity int NOT NULL
 );
 
-DROP USER IF EXISTS 'patient'@'%';
-DROP USER IF EXISTS 'pharmacy'@'%';
-DROP USER IF EXISTS 'prescriber'@'%';
 -- making patient persona user
 create USER 'patient'@'%' IDENTIFIED by 'ineedmeds';
 GRANT SELECT, UPDATE on pharmacy_db.Patient to 'patient'@'%';
@@ -445,7 +440,7 @@ insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication,
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (31, 5, 16, 10, 'Asparagus', '2022-07-28 01:50:00', 96, 'pede posuere nonummy integer');
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (32, 12, 21, 17, 'Cimicifuga racemosa 6X', '2022-04-03 08:32:13', 11, 'non lectus');
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (33, 30, 4, 18, 'simethicone', '2022-02-10 14:48:29', 53, 'id mauris');
-insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (34, 13, 1, 17, 'Echinacea, Lobelia Inflata, Kali Carbonicum', '2022-01-16 17:26:59', 79, 'nulla facilisi cras');
+insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (34, 13, 1, 17, 'Echinacea, Lobelia Inflata, Antimonium Tartaricum, Aralia Racemosa, Drosera, Ipecacuanha, Kali Carbonicum', '2022-01-16 17:26:59', 79, 'nulla facilisi cras');
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (35, 30, 16, 11, 'divalproex sodium', '2022-11-18 01:25:39', 38, 'in sagittis');
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (36, 24, 16, 10, 'Nitrogen', '2022-06-10 04:40:16', 96, 'proin at turpis');
 insert into ElectronicRx (RxID, pharmacyID, prescriberID, patientID, medication, rxDate, quantity, directions) values (37, 27, 29, 1, 'Ethyl Alcohol', '2022-07-25 06:44:59', 15, 'in blandit ultrices enim');
@@ -610,56 +605,56 @@ insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, ord
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (28, 15, 16, 28, '2022-11-11 13:39:51', 'mauris');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (29, 11, 23, 29, '2022-10-29 05:31:19', 'proin');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (30, 15, 13, 30, '2021-12-15 04:54:01', 'sit');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (31, 16, 7, 1, '2022-11-01 17:14:50', 'varius');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (32, 22, 5, 2, '2022-09-06 06:30:06', 'suscipit');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (33, 30, 8, 3, '2022-10-20 10:10:59', 'libero');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (34, 26, 24, 4, '2022-09-04 09:32:47', 'faucibus');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (35, 12, 9, 5, '2022-10-27 11:46:12', 'pede');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (36, 18, 7, 6, '2022-06-21 18:39:41', 'bibendum');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (37, 18, 25, 7, '2022-09-21 14:28:27', 'lacinia');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (38, 16, 16, 8, '2022-08-29 09:30:49', 'quam');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (39, 3, 7, 9, '2022-09-01 08:41:56', 'orci');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (40, 13, 13, 10, '2022-08-16 06:21:45', 'id');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (41, 11, 1, 11, '2021-12-13 22:04:00', 'molestie');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (42, 12, 2, 12, '2022-01-23 16:55:51', 'cubilia');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (43, 2, 12, 13, '2022-06-25 04:43:38', 'consequat');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (44, 15, 9, 14, '2022-04-04 04:41:04', 'ante');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (45, 4, 17, 15, '2022-03-12 21:45:41', 'augue');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (46, 17, 16, 16, '2022-04-03 21:52:18', 'velit');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (47, 10, 25, 17, '2022-06-26 22:00:56', 'nunc');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (48, 5, 15, 18, '2022-11-11 23:28:50', 'curae');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (49, 26, 17, 19, '2022-02-26 14:16:15', 'id');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (50, 14, 6, 20, '2022-03-14 04:55:27', 'dolor');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (51, 19, 20, 21, '2022-08-31 17:48:22', 'mauris');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (52, 24, 8, 22, '2022-01-22 08:31:01', 'maecenas');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (53, 30, 7, 23, '2022-09-01 11:30:04', 'lobortis');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (54, 15, 13, 24, '2022-10-01 04:16:59', 'vestibulum');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (55, 24, 10, 25, '2021-12-22 00:05:31', 'aliquet');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (56, 16, 14, 26, '2022-11-13 08:16:46', 'quis');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (57, 17, 30, 27, '2022-06-09 19:45:40', 'praesent');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (58, 24, 29, 28, '2022-07-06 01:47:39', 'cras');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (59, 24, 13, 29, '2022-06-08 11:56:24', 'maecenas');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (60, 11, 28, 30, '2022-03-01 02:42:14', 'justo');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (61, 15, 16, 1, '2022-10-26 15:25:14', 'nulla');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (62, 29, 8, 2, '2022-08-31 20:00:48', 'amet');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (63, 4, 8, 3, '2022-01-06 00:11:03', 'vel');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (64, 7, 1, 4, '2022-06-09 02:08:54', 'eleifend');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (65, 5, 30, 5, '2022-03-03 01:03:24', 'consequat');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (66, 24, 8, 6, '2022-05-28 18:02:41', 'vehicula');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (67, 24, 4, 7, '2022-06-02 15:14:21', 'non');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (68, 5, 14, 8, '2022-07-05 05:03:59', 'at');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (69, 20, 26, 9, '2022-05-23 02:41:29', 'primis');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (70, 17, 16, 10, '2022-08-25 09:26:43', 'lacinia');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (71, 25, 24, 11, '2022-10-04 12:12:55', 'nulla');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (72, 9, 21, 12, '2022-07-20 17:50:19', 'neque');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (73, 28, 7, 13, '2022-07-15 17:53:59', 'id');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (74, 4, 24, 14, '2021-12-11 21:08:16', 'mauris');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (75, 5, 2, 15, '2022-04-18 04:46:40', 'lorem');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (76, 30, 27, 16, '2022-06-10 02:34:53', 'nulla');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (77, 3, 14, 17, '2022-09-13 00:25:13', 'nunc');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (78, 14, 18, 18, '2022-01-02 15:56:04', 'hac');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (79, 1, 13, 19, '2022-04-12 13:25:12', 'id');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (80, 28, 25, 20, '2022-05-23 06:00:03', 'leo');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (31, 16, 7, 31, '2022-11-01 17:14:50', 'varius');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (32, 22, 5, 32, '2022-09-06 06:30:06', 'suscipit');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (33, 30, 8, 33, '2022-10-20 10:10:59', 'libero');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (34, 26, 24, 34, '2022-09-04 09:32:47', 'faucibus');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (35, 12, 9, 35, '2022-10-27 11:46:12', 'pede');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (36, 18, 7, 36, '2022-06-21 18:39:41', 'bibendum');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (37, 18, 25, 37, '2022-09-21 14:28:27', 'lacinia');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (38, 16, 16, 38, '2022-08-29 09:30:49', 'quam');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (39, 3, 7, 39, '2022-09-01 08:41:56', 'orci');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (40, 13, 13, 40, '2022-08-16 06:21:45', 'id');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (41, 11, 1, 41, '2021-12-13 22:04:00', 'molestie');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (42, 12, 2, 42, '2022-01-23 16:55:51', 'cubilia');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (43, 2, 12, 43, '2022-06-25 04:43:38', 'consequat');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (44, 15, 9, 44, '2022-04-04 04:41:04', 'ante');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (45, 4, 17, 45, '2022-03-12 21:45:41', 'augue');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (46, 17, 16, 46, '2022-04-03 21:52:18', 'velit');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (47, 10, 25, 47, '2022-06-26 22:00:56', 'nunc');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (48, 5, 15, 48, '2022-11-11 23:28:50', 'curae');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (49, 26, 17, 49, '2022-02-26 14:16:15', 'id');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (50, 14, 6, 50, '2022-03-14 04:55:27', 'dolor');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (51, 19, 20, 51, '2022-08-31 17:48:22', 'mauris');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (52, 24, 8, 52, '2022-01-22 08:31:01', 'maecenas');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (53, 30, 7, 53, '2022-09-01 11:30:04', 'lobortis');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (54, 15, 13, 54, '2022-10-01 04:16:59', 'vestibulum');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (55, 24, 10, 55, '2021-12-22 00:05:31', 'aliquet');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (56, 16, 14, 56, '2022-11-13 08:16:46', 'quis');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (57, 17, 30, 57, '2022-06-09 19:45:40', 'praesent');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (58, 24, 29, 58, '2022-07-06 01:47:39', 'cras');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (59, 24, 13, 59, '2022-06-08 11:56:24', 'maecenas');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (60, 11, 28, 60, '2022-03-01 02:42:14', 'justo');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (61, 15, 16, 61, '2022-10-26 15:25:14', 'nulla');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (62, 29, 8, 62, '2022-08-31 20:00:48', 'amet');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (63, 4, 8, 63, '2022-01-06 00:11:03', 'vel');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (64, 7, 1, 64, '2022-06-09 02:08:54', 'eleifend');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (65, 5, 30, 65, '2022-03-03 01:03:24', 'consequat');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (66, 24, 8, 66, '2022-05-28 18:02:41', 'vehicula');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (67, 24, 4, 67, '2022-06-02 15:14:21', 'non');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (68, 5, 14, 68, '2022-07-05 05:03:59', 'at');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (69, 20, 26, 69, '2022-05-23 02:41:29', 'primis');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (70, 17, 16, 70, '2022-08-25 09:26:43', 'lacinia');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (71, 25, 24, 71, '2022-10-04 12:12:55', 'nulla');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (72, 9, 21, 72, '2022-07-20 17:50:19', 'neque');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (73, 28, 7, 73, '2022-07-15 17:53:59', 'id');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (74, 4, 24, 74, '2021-12-11 21:08:16', 'mauris');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (75, 5, 2, 75, '2022-04-18 04:46:40', 'lorem');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (76, 30, 27, 76, '2022-06-10 02:34:53', 'nulla');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (77, 3, 14, 77, '2022-09-13 00:25:13', 'nunc');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (78, 14, 18, 78, '2022-01-02 15:56:04', 'hac');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (79, 1, 13, 79, '2022-04-12 13:25:12', 'id');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (80, 28, 25, 80, '2022-05-23 06:00:03', 'leo');
 
 --
 
@@ -861,7 +856,7 @@ insert into Product (productID, wholesalerID, name, price) values (3, 3, 'Oxygen
 insert into Product (productID, wholesalerID, name, price) values (4, 4, 'Ibuprofen', 92.95);
 insert into Product (productID, wholesalerID, name, price) values (5, 5, 'DIPHENHYDRAMINE HYDROCHLORIDE', 44.02);
 insert into Product (productID, wholesalerID, name, price) values (6, 6, 'Salicylic Acid', 17.91);
-insert into Product (productID, wholesalerID, name, price) values (7, 7, 'Bacitracin Zinc, Neomycin Sulfate', 23.88);
+insert into Product (productID, wholesalerID, name, price) values (7, 7, 'Bacitracin Zinc, Neomycin Sulfate, Polymyxin B Sulfate, and Pramoxine Hydrochloride', 23.88);
 insert into Product (productID, wholesalerID, name, price) values (8, 8, 'Aceticum acidum, Colchicum autumnale, Lacticum acidum', 27.31);
 insert into Product (productID, wholesalerID, name, price) values (9, 9, 'Enalapril Maleate', 56.37);
 insert into Product (productID, wholesalerID, name, price) values (10, 10, 'HYDROCODONE BITARTRATE AND ACETAMINOPHEN', 96.47);
@@ -918,56 +913,56 @@ insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (27, 
 insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (28, 28, '2022-01-16 10:42:03', 'augue a suscipit nulla elit');
 insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (29, 29, '2022-10-11 16:08:47', 'sodales sed tincidunt eu');
 insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (30, 30, '2022-05-31 13:16:33', 'quam sapien varius ut');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (31, 1, '2022-06-18 01:12:41', 'pellentesque at nulla suspendisse');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (32, 2, '2022-10-08 21:03:59', 'luctus et ultrices posuere');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (33, 3, '2022-04-04 16:49:53', 'non interdum in ante');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (34, 4, '2022-08-09 03:56:03', 'curae donec pharetra magna vestibulum');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (35, 5, '2022-05-21 00:34:24', 'vel accumsan tellus nisi');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (36, 6, '2022-03-21 22:12:24', 'vestibulum ac est lacinia nisi');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (37, 7, '2021-12-09 03:57:20', 'augue luctus tincidunt nulla mollis');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (38, 8, '2022-07-28 12:48:42', 'nunc proin at turpis');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (39, 9, '2022-08-30 14:30:59', 'in felis eu sapien');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (40, 10, '2022-02-24 09:50:58', 'duis bibendum morbi non');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (41, 11, '2022-10-24 21:00:10', 'leo maecenas pulvinar lobortis');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (42, 12, '2022-10-04 10:39:31', 'eleifend luctus ultricies eu');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (43, 13, '2022-10-29 05:19:48', 'nunc vestibulum ante ipsum');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (44, 14, '2022-04-23 19:45:19', 'eu tincidunt in leo');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (45, 15, '2022-06-13 17:29:46', 'odio in hac habitasse platea');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (46, 16, '2022-03-20 21:44:30', 'at velit eu est');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (47, 17, '2022-10-30 02:09:36', 'consequat metus sapien ut nunc');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (48, 18, '2022-06-13 16:09:51', 'quisque ut erat curabitur');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (49, 19, '2022-01-29 17:10:05', 'justo sit amet sapien');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (50, 20, '2022-10-16 14:27:48', 'tristique fusce congue diam');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (51, 21, '2022-03-20 11:29:25', 'pretium iaculis justo in');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (52, 22, '2022-05-14 01:33:54', 'nulla facilisi cras non velit');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (53, 23, '2021-12-16 17:12:54', 'ac diam cras pellentesque');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (54, 24, '2022-04-17 10:32:48', 'parturient montes nascetur ridiculus');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (55, 25, '2022-09-21 14:12:46', 'massa id lobortis convallis tortor');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (56, 26, '2022-08-12 09:40:57', 'rutrum rutrum neque aenean auctor');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (57, 27, '2022-11-19 05:48:54', 'id luctus nec molestie');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (58, 28, '2022-08-19 17:31:40', 'sed lacus morbi sem mauris');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (59, 29, '2021-12-30 07:01:03', 'varius nulla facilisi cras non');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (60, 30, '2022-06-15 10:40:02', 'sit amet nulla quisque arcu');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (61, 1, '2022-09-08 20:12:03', 'volutpat sapien arcu sed');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (62, 2, '2022-08-13 20:14:48', 'amet diam in magna');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (63, 3, '2022-05-20 23:11:30', 'morbi quis tortor id nulla');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (64, 4, '2022-10-10 22:27:37', 'et eros vestibulum ac');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (65, 5, '2022-07-02 21:47:25', 'morbi odio odio elementum eu');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (66, 6, '2022-07-17 00:09:08', 'posuere nonummy integer non velit');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (67, 7, '2022-04-15 15:29:08', 'odio justo sollicitudin ut');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (68, 8, '2022-03-10 19:21:33', 'maecenas tristique est et tempus');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (69, 9, '2022-10-08 08:05:57', 'accumsan tortor quis turpis');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (70, 10, '2022-01-31 19:01:17', 'ut nunc vestibulum ante');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (71, 11, '2021-12-10 13:09:50', 'nulla integer pede justo');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (72, 12, '2022-10-29 15:09:09', 'vivamus metus arcu adipiscing');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (73, 13, '2022-02-17 11:41:35', 'convallis nunc proin at turpis');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (74, 14, '2022-01-19 05:30:59', 'pede malesuada in imperdiet et');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (75, 15, '2022-01-06 12:49:03', 'sapien placerat ante nulla justo');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (76, 16, '2022-07-17 01:09:21', 'placerat ante nulla justo aliquam');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (77, 17, '2022-05-04 23:46:05', 'arcu adipiscing molestie hendrerit at');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (78, 18, '2022-07-02 00:30:30', 'orci vehicula condimentum curabitur in');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (79, 19, '2022-04-30 16:47:10', 'amet sapien dignissim vestibulum');
-insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (80, 20, '2022-03-02 08:45:21', 'ut erat curabitur gravida nisi');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (31, 31, '2022-06-18 01:12:41', 'pellentesque at nulla suspendisse');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (32, 32, '2022-10-08 21:03:59', 'luctus et ultrices posuere');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (33, 33, '2022-04-04 16:49:53', 'non interdum in ante');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (34, 34, '2022-08-09 03:56:03', 'curae donec pharetra magna vestibulum');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (35, 35, '2022-05-21 00:34:24', 'vel accumsan tellus nisi');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (36, 36, '2022-03-21 22:12:24', 'vestibulum ac est lacinia nisi');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (37, 37, '2021-12-09 03:57:20', 'augue luctus tincidunt nulla mollis');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (38, 38, '2022-07-28 12:48:42', 'nunc proin at turpis');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (39, 39, '2022-08-30 14:30:59', 'in felis eu sapien');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (40, 40, '2022-02-24 09:50:58', 'duis bibendum morbi non');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (41, 41, '2022-10-24 21:00:10', 'leo maecenas pulvinar lobortis');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (42, 42, '2022-10-04 10:39:31', 'eleifend luctus ultricies eu');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (43, 43, '2022-10-29 05:19:48', 'nunc vestibulum ante ipsum');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (44, 44, '2022-04-23 19:45:19', 'eu tincidunt in leo');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (45, 45, '2022-06-13 17:29:46', 'odio in hac habitasse platea');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (46, 46, '2022-03-20 21:44:30', 'at velit eu est');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (47, 47, '2022-10-30 02:09:36', 'consequat metus sapien ut nunc');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (48, 48, '2022-06-13 16:09:51', 'quisque ut erat curabitur');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (49, 49, '2022-01-29 17:10:05', 'justo sit amet sapien');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (50, 50, '2022-10-16 14:27:48', 'tristique fusce congue diam');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (51, 51, '2022-03-20 11:29:25', 'pretium iaculis justo in');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (52, 52, '2022-05-14 01:33:54', 'nulla facilisi cras non velit');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (53, 53, '2021-12-16 17:12:54', 'ac diam cras pellentesque');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (54, 54, '2022-04-17 10:32:48', 'parturient montes nascetur ridiculus');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (55, 55, '2022-09-21 14:12:46', 'massa id lobortis convallis tortor');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (56, 56, '2022-08-12 09:40:57', 'rutrum rutrum neque aenean auctor');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (57, 57, '2022-11-19 05:48:54', 'id luctus nec molestie');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (58, 58, '2022-08-19 17:31:40', 'sed lacus morbi sem mauris');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (59, 59, '2021-12-30 07:01:03', 'varius nulla facilisi cras non');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (60, 60, '2022-06-15 10:40:02', 'sit amet nulla quisque arcu');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (61, 61, '2022-09-08 20:12:03', 'volutpat sapien arcu sed');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (62, 62, '2022-08-13 20:14:48', 'amet diam in magna');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (63, 63, '2022-05-20 23:11:30', 'morbi quis tortor id nulla');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (64, 64, '2022-10-10 22:27:37', 'et eros vestibulum ac');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (65, 65, '2022-07-02 21:47:25', 'morbi odio odio elementum eu');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (66, 66, '2022-07-17 00:09:08', 'posuere nonummy integer non velit');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (67, 67, '2022-04-15 15:29:08', 'odio justo sollicitudin ut');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (68, 68, '2022-03-10 19:21:33', 'maecenas tristique est et tempus');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (69, 69, '2022-10-08 08:05:57', 'accumsan tortor quis turpis');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (70, 70, '2022-01-31 19:01:17', 'ut nunc vestibulum ante');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (71, 71, '2021-12-10 13:09:50', 'nulla integer pede justo');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (72, 72, '2022-10-29 15:09:09', 'vivamus metus arcu adipiscing');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (73, 73, '2022-02-17 11:41:35', 'convallis nunc proin at turpis');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (74, 74, '2022-01-19 05:30:59', 'pede malesuada in imperdiet et');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (75, 75, '2022-01-06 12:49:03', 'sapien placerat ante nulla justo');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (76, 76, '2022-07-17 01:09:21', 'placerat ante nulla justo aliquam');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (77, 77, '2022-05-04 23:46:05', 'arcu adipiscing molestie hendrerit at');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (78, 78, '2022-07-02 00:30:30', 'orci vehicula condimentum curabitur in');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (79, 79, '2022-04-30 16:47:10', 'amet sapien dignissim vestibulum vestibulum');
+insert into Shipment (shipmentID, pharmacyID, shipDate, shipStatus) values (80, 80, '2022-03-02 08:45:21', 'ut erat curabitur gravida nisi');
 
 --
 
