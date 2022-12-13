@@ -31,7 +31,7 @@ Note: not all routes are implemented in the AppSmith UI.
 
 - `patient`: contains dashboard `GET` and profile `GET, POST` functions for patients
   - `orders.py`: 3 `GET`, 1 `POST`
-  - `patients.py`: 8 `GET`, 2 `POST`
+  - `patients.py`: 7 `GET`, 2 `POST`
 - `ph_employee`: contains dashboard `GET` functions for pharmacy staff
   - `electronicrx.py`: 1 `GET`, 1 `POST`
   - `ph_employee.py`: 3 `GET`
