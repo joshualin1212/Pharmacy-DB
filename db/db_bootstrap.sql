@@ -4,9 +4,6 @@
 -- need this name in the FLASK API file(s),  the AppSmith 
 -- data source creation.
 CREATE DATABASE pharmacy_db;
--- create USER 'webapp'@'%' IDENTIFIED by 'abc123';
--- grant ALL PRIVILEGES on pharmacy_db.* to 'webapp'@'%';
--- FLUSH PRIVILEGES;
 
 -- Via the Docker Compose file, a special user called webapp will 
 -- be created in MySQL. We are going to grant that user 
