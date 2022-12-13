@@ -59,12 +59,3 @@ def get_ph_order(pharmID, orderID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
-# TODO:
-# UPDATE order status (ready, canceled, etc)
-@ph_orders.route('', methods=['POST'])
-def update_ph_employee(userID):
-    pass
-
-# TODO:
-# UPDATE order item details (quantity, RxID)

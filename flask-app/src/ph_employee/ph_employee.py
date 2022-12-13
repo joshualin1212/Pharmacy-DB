@@ -72,9 +72,3 @@ def get_ph_employee_pharmacy(userID):
     the_response.mimetype = 'application/json'
     return the_response
 
-
-# TODO:
-# UPDATE pharmacy employee detail for employee with particular userID
-@ph_employee.route('/ph_employee/<userID>', methods=['POST'])
-def update_ph_employee(userID):
-    pass
