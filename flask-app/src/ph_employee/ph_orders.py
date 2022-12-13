@@ -20,6 +20,7 @@ def get_ph_orders(phEmployeeID):
         join PharmacyEmployee pe 
         on p.pharmacyID = pe.pharmacyID
         where phEmployeeID = {phEmployeeID}
+        and po.orderStatus = 'not ready'
     '''
     cursor.execute(query)
 

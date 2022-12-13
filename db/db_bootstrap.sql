@@ -597,7 +597,7 @@ insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, ord
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (21, 10, 21, 24, '2021-12-29 12:40:31', 'a');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (22, 9, 10, 11, '2022-11-04 19:00:46', 'duis');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (23, 14, 13, 13, '2022-05-10 15:09:35', 'sit');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (24, 18, 26, 1, '2022-02-04 14:42:17', 'nam');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (24, 18, 26, 1, '2022-02-04 14:42:17', 'not ready');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (25, 18, 19, 28, '2022-04-12 18:22:40', 'mauris');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (26, 2, 5, 8, '2022-11-08 15:44:30', 'ready');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (27, 19, 12, 27, '2022-01-12 15:28:58', 'tortor');
@@ -615,10 +615,10 @@ insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, ord
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (39, 19, 12, 30, '2022-11-02 20:26:33', 'rhoncus');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (40, 13, 27, 11, '2022-08-14 16:32:13', 'non');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (41, 7, 27, 18, '2022-11-04 07:18:51', 'id');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (42, 16, 18, 1, '2022-02-20 23:59:45', 'integer');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (42, 16, 18, 1, '2022-02-20 23:59:45', 'not ready');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (43, 1, 14, 21, '2021-12-12 10:52:21', 'ready');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (44, 1, 6, 13, '2022-08-05 15:09:09', 'not ready');
-insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (45, 3, 28, 1, '2022-06-30 15:03:19', 'sit');
+insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (45, 3, 28, 1, '2022-06-30 15:03:19', 'not ready');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (46, 5, 22, 25, '2022-04-10 07:04:09', 'vivamus');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (47, 19, 15, 6, '2022-05-18 15:53:33', 'semper');
 insert into PaOrder (orderID, patientID, insuranceID, pharmacyID, orderDate, orderStatus) values (48, 15, 16, 16, '2022-05-09 18:24:36', 'lorem');
