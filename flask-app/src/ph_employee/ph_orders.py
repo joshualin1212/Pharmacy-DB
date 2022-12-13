@@ -6,16 +6,20 @@ from src import db
 ph_orders = Blueprint('ph_orders', __name__)
 
 # GET all orders from pharmacy with particular pharmID from the DB
-@ph_orders.route('/pharmacy/<pharmID>', methods=['GET'])
-def get_ph_orders(pharmID):
+@ph_orders.route('/pharmacy/<phEmployeeID>/orders', methods=['GET'])
+def get_ph_orders(phEmployeeID):
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
     # use cursor to query the database for a list of pharmacy employees
     query = f'''
         SELECT *
-        FROM PaOrder
-        WHERE pharmacyID = {pharmID}
+        FROM Pharmacy p
+        join 
+        PaOrder po on po.pharmacyID = p.pharmacyID
+        join PharmacyEmployee pe 
+        on p.pharmacyID = pe.pharmacyID
+        where phEmployeeID = {phEmployeeID}
     '''
     cursor.execute(query)
 

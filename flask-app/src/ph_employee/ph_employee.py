@@ -42,7 +42,7 @@ def get_ph_employee(userID):
     query = f'''
         SELECT *
         FROM PharmacyEmployee
-        WHERE PharmacyEmployeephEmployeeID = {userID}
+        WHERE PharmacyEmployee.phEmployeeID = {userID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -59,7 +59,7 @@ def get_ph_employee(userID):
 @ph_employee.route('/ph_employee/<userID>/pharmacy', methods=['GET'])
 def get_ph_employee_pharmacy(userID):
     cursor = db.get_db().cursor()
-    query = f'''SELECT * from Pharmacy JOIN PharmacyEmployee ON Pharmacy.pharmacyID = PharmacyEmployee.pharmacyID where PharmacyEmployee.phEmployeeID = {userID}
+    query = f'''SELECT * from Pharmacy LEFT OUTER JOIN PharmacyEmployee ON Pharmacy.pharmacyID = PharmacyEmployee.pharmacyID where PharmacyEmployee.phEmployeeID = {userID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]

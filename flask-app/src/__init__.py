@@ -35,7 +35,8 @@ def create_app():
     
     from src.ph_employee.ph_employee import ph_employee
     from src.ph_employee.ph_orders import ph_orders
-    
+    from src.ph_employee.electronicrx import ph_erx
+
     from src.prescriber.prescribers import prescribers
     
 
@@ -49,6 +50,7 @@ def create_app():
 
     app.register_blueprint(ph_employee,    url_prefix='/pharmacy')
     app.register_blueprint(ph_orders,    url_prefix='/pharmacy')
+    app.register_blueprint(ph_erx,    url_prefix='/pharmacy')
 
     app.register_blueprint(prescribers,    url_prefix='/pharmacy')
 

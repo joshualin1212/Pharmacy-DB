@@ -7,13 +7,16 @@ ph_erx = Blueprint('ph_erx', __name__)
 
 # GET electronic rx with matching phEmplID from DB match to employee
 @ph_erx.route('/pharmacy/<phEmployeeID>/electronicrx', methods=['GET'])
-def get_ph_order(phEmployeeID):
+def get_ph_electronic_rx(phEmployeeID):
     cursor = db.get_db().cursor()
     query = f'''
         SELECT *
-        FROM ElectronicRx
-        join Pharmacy on ElectronicRx.pharmacyID = pharmacyID
-        join PharmacyEmployee on PharmacyEmployee.pharmacyID = {phEmployeeID}
+        FROM Pharmacy p
+        join 
+        ElectronicRx e on e.pharmacyID = p.pharmacyID
+        join PharmacyEmployee pe 
+        on p.pharmacyID = pe.pharmacyID
+        where phEmployeeID = {phEmployeeID}
     '''
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
